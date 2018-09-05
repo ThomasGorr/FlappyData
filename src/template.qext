@@ -1,0 +1,8 @@
+{
+  "name" : "timeScatter",
+  "description" : "timeScatter",
+  "icon" : "extension",
+  "type" : "visualization",
+  "version": "1.0",
+  "author": "Thomas Gorr, thomas@gorr.eu"
+}
