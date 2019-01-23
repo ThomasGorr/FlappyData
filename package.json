@@ -1,7 +1,7 @@
 {
-  "name": "picassoScatter",
+  "name": "flappyData",
   "version": "1.0.0",
-  "description": "Qlik Sense Scatterplot",
+  "description": "Qlik Sense Flappy Data",
   "main": "index.js",
   "scripts": {
     "dev": "node_modules/.bin/webpack-dev-server --env.development --env.url=http://localhost:4848/sense/app/C%3A%5CUsers%5Ctgorr%5CDocuments%5CQlik%5CSense%5CApps%5CScatter.qvf/sheet/3242281e-c139-472c-abdd-8b4b62f0af2a/state/edit --env.build_output=C:/Users/tgorr/Documents/Qlik/Sense/Extensions/FlappyData --progress",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ThomasGorr/PicassoJSScatter.git"
+    "url": "https://github.com/ThomasGorr"
   },
   "keywords": [],
   "author": "Thomas Gorr (thomas@gorr.eu)",
@@ -39,7 +39,6 @@
     "zip-webpack-plugin": "^1.1.0"
   },
   "dependencies": {
-    "picasso-plugin-q": "^0.12.2",
-    "picasso.js": "^0.12.2"
+    "p5": "^0.7.3"
   }
 }
