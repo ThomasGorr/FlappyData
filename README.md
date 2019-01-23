@@ -1,3 +1,5 @@
-# PicassoJSCustomScatter
+# Flappy Data
 
-This repo shows how to build a scatter chart with PicassoJS with custom components that support tooltips.
+This is a implementation of the Flappy Bird game for Qlik Sense.
+
+Play with your data!
