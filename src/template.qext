@@ -1,6 +1,6 @@
 {
-  "name" : "timeScatter",
-  "description" : "timeScatter",
+  "name" : "FlappyData",
+  "description" : "FlappyData",
   "icon" : "extension",
   "type" : "visualization",
   "version": "1.0",
