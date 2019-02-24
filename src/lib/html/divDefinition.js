@@ -1,6 +1,6 @@
 
-export function defineHTML($, $element) {
+export function     defineHTML($, $element) {
     $element.empty();
-    let html = "<div id='scatter' style='height:80%; width:100%'></div>";
+    let html = "<div id='flappyData' style='height:80%; width:100%'></div>";
     $element.html(html);
 }

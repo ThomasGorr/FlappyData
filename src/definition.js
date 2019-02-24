@@ -9,7 +9,7 @@ export const definition = {
         },
         measure: {
             uses: "measures",
-            min: 2,
+            min: 1,
             max: 2,
         },
         sorting: {
