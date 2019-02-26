@@ -98,25 +98,30 @@ export function main($element, layout) {
     } catch (e) {
         console.error(e);
     }
-    innerPaint($element, layout);
 }
 
-async function innerPaint($element, layout) {
-    console.log(layout);
-}
 
 function preloadGraphics(p) {
     backgroundIMG = p.loadImage("/content/default/background.png");
-    flappoIMG = p.loadImage("/content/default/train.png");
+    flappoIMG = p.loadImage("/content/default/unicorn.png");
     pipeBodyIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
     pipePeakIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
 }
 
 function reset(layout, p) {
+    p.noLoop();
+    flappo = null;
     flappo = new Flappo(p, height, flappoIMG);
     pipes = [];
-    layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow) => {
-        pipes.push(new Pipe(p, dataRow[1].qNum, height, pipeBodyIMG, pipePeakIMG));
+    layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
+        let x = 0;
+        if (index === 0) {
+            x = width;
+        } else {
+            // Always 3 full pipes on the screen
+            x = width * index / 3;
+        }
+        pipes.push(new Pipe(p, dataRow[1].qNum, height, x, pipeBodyIMG, pipePeakIMG));
     });
     console.log("Pipes", pipes);
     isOver = false;
