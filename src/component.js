@@ -24,8 +24,8 @@ const parallax = 0.8;
 
 let p;
 
-let width = 800;
-let height = 600;
+let windowWidth = 800;
+let windowHeight = 600;
 
 export function main($element, layout) {
     try {
@@ -38,13 +38,13 @@ export function main($element, layout) {
 
             sk.setup = () => {
                 console.log("SETUP");
-                sk.createCanvas(width, height).parent("flappyData");
+                sk.createCanvas(windowWidth, windowHeight).parent("flappyData");
                 reset(layout, sk);
             };
 
             sk.draw = () => {
                 sk.background(0);
-                sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, height);
+                sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, windowHeight);
                 if (pipes.length > 0) {
                     bgX -= pipes[0].speed * parallax;
 
@@ -53,8 +53,8 @@ export function main($element, layout) {
                     // second copy of the image right next to it
                     // once the second image gets to the 0 point, we can reset bgX to
                     // 0 and go back to drawing just one image.
-                    if (bgX <= -backgroundIMG.width + width) {
-                        sk.image(backgroundIMG, bgX + backgroundIMG.width, 0, backgroundIMG.width, height);
+                    if (bgX <= -backgroundIMG.width + windowWidth) {
+                        sk.image(backgroundIMG, bgX + backgroundIMG.width, 0, backgroundIMG.width, windowHeight);
                         if (bgX <= -backgroundIMG.width) {
                             bgX = 0;
                         }
@@ -116,17 +116,17 @@ function preloadGraphics(p) {
 function reset(layout, p) {
     p.noLoop();
     flappo = null;
-    flappo = new Flappo(p, height, flappoIMG);
+    flappo = new Flappo(p, windowHeight, flappoIMG);
     pipes = [];
     layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
         let x = 0;
         if (index === 0) {
-            x = width;
+            x = windowWidth;
         } else {
             // Always 3 full pipes on the screen
-            x = width * index / 3;
+            x = windowWidth * index / 3;
         }
-        pipes.push(new Pipe(p, dataRow[1].qNum, height, x, pipeBodyIMG, pipePeakIMG));
+        pipes.push(new Pipe(p, dataRow[1].qNum, windowHeight, x, pipeBodyIMG, pipePeakIMG));
     });
     console.log("Pipes", pipes);
     isOver = false;
@@ -137,7 +137,7 @@ function reset(layout, p) {
 function gameover(p) {
     p.textSize(64);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text("GAMEOVER", width / 2, height / 2);
+    p.text("GAMEOVER", windowWidth / 2, windowHeight / 2);
     p.textAlign(p.LEFT, p.BASELINE);
     isOver = true;
     p.noLoop();
@@ -146,7 +146,7 @@ function gameover(p) {
 function gameWin(p){
     p.textSize(64);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text("You won the game!", width / 2, height / 2);
+    p.text("You won the game!", windowWidth / 2, windowHeight / 2);
     p.textAlign(p.LEFT, p.BASELINE);
     isOver = true;
     p.noLoop();
