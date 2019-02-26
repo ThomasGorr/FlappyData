@@ -57,6 +57,28 @@ export function main($element, layout) {
                         bgX = 0;
                     }
                 }
+
+                for (let i = 0; i <= pipes.length - 1 ; i++) {
+                    pipes[i].update();
+                    pipes[i].show();
+
+                    if (pipes[i].pass(flappo)) {
+                        score++;
+                    }
+
+                    if (pipes[i].hits(flappo)) {
+                        gameover();
+                    }
+
+                    if (pipes[i].offscreen()) {
+                        debugger;
+                        pipes.shift();
+                    }
+                }
+
+                flappo.update();
+                flappo.show();
+
             };
 
             sk.keyPressed = () => {
