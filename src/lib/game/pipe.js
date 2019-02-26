@@ -37,7 +37,7 @@ export class Pipe {
         return false;
     }
 
-    rawHalf() {
+    drawHalf() {
         let howManyNedeed = 0;
         let peakRatio = this.pipePeakIMG.height / this.pipePeakIMG.width;
         let bodyRatio = this.pipeBodyIMG.height / this.pipeBodyIMG.width;
