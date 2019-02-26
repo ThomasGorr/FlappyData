@@ -37,6 +37,7 @@ export function main($element, layout) {
             };
 
             sk.setup = () => {
+                console.log("SETUP");
                 sk.createCanvas(width, height).parent("flappyData");
                 reset(layout, sk);
             };
@@ -44,36 +45,40 @@ export function main($element, layout) {
             sk.draw = () => {
                 sk.background(0);
                 sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, height);
-                bgX -= pipes[0].speed * parallax;
+                if (pipes.length > 0) {
+                    bgX -= pipes[0].speed * parallax;
 
-                // this handles the "infinite loop" by checking if the right
-                // edge of the image would be on the screen, if it is draw a
-                // second copy of the image right next to it
-                // once the second image gets to the 0 point, we can reset bgX to
-                // 0 and go back to drawing just one image.
-                if (bgX <= -backgroundIMG.width + width) {
-                    sk.image(backgroundIMG, bgX + backgroundIMG.width, 0, backgroundIMG.width, height);
-                    if (bgX <= -backgroundIMG.width) {
-                        bgX = 0;
-                    }
-                }
-
-                for (let i = 0; i <= pipes.length - 1 ; i++) {
-                    pipes[i].update();
-                    pipes[i].show();
-
-                    if (pipes[i].pass(flappo)) {
-                        score++;
+                    // this handles the "infinite loop" by checking if the right
+                    // edge of the image would be on the screen, if it is draw a
+                    // second copy of the image right next to it
+                    // once the second image gets to the 0 point, we can reset bgX to
+                    // 0 and go back to drawing just one image.
+                    if (bgX <= -backgroundIMG.width + width) {
+                        sk.image(backgroundIMG, bgX + backgroundIMG.width, 0, backgroundIMG.width, height);
+                        if (bgX <= -backgroundIMG.width) {
+                            bgX = 0;
+                        }
                     }
 
-                    if (pipes[i].hits(flappo)) {
-                        gameover();
-                    }
+                    for (let i = 0; i <= pipes.length - 1; i++) {
 
-                    if (pipes[i].offscreen()) {
-                        debugger;
-                        pipes.shift();
+                        pipes[i].update();
+                        pipes[i].show();
+
+                        if (pipes[i].pass(flappo)) {
+                            score++;
+                        }
+
+                        if (pipes[i].hits(flappo)) {
+                            gameover();
+                        }
+
+                        if (pipes[i].offscreen()) {
+                            pipes.shift();
+                        }
                     }
+                } else {
+                    gameover(sk);
                 }
 
                 flappo.update();
