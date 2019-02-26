@@ -3,6 +3,11 @@ export class Pipe {
         this.p = p;
         this.spacing = 125;
         this.top = top;
+
+        this.x = 800;
+        this.w = 80;
+        this.speed = 3;
+
         this.height = height;
         this.pipeBodyIMG = pipeBodyIMG;
         this.pipePeakIMG = pipePeakIMG;

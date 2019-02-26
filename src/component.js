@@ -44,7 +44,19 @@ export function main($element, layout) {
             sk.draw = () => {
                 sk.background(0);
                 sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, height);
-                // bgX -= pipes[0].speed * parallax;
+                bgX -= pipes[0].speed * parallax;
+
+                // this handles the "infinite loop" by checking if the right
+                // edge of the image would be on the screen, if it is draw a
+                // second copy of the image right next to it
+                // once the second image gets to the 0 point, we can reset bgX to
+                // 0 and go back to drawing just one image.
+                if (bgX <= -backgroundIMG.width + width) {
+                    sk.image(backgroundIMG, bgX + backgroundIMG.width, 0, backgroundIMG.width, height);
+                    if (bgX <= -backgroundIMG.width) {
+                        bgX = 0;
+                    }
+                }
             };
 
             sk.keyPressed = () => {
