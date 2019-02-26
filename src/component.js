@@ -4,26 +4,63 @@ import $ from "jquery";
 import "./styles.css";
 import p5 from "p5/lib/p5.js";
 import {defineHTML} from "./lib/html/divDefinition";
+import {Pipe} from "./lib/game/pipe";
+import {Flappo} from "./lib/game/flappo";
+
+
+let flappo;
+let pipes;
+let backgroundIMG;
+let flappoIMG;
+let pipeBodyIMG;
+let pipePeakIMG;
+let bgX;
+let score = 0;
+let isOver = false;
+let touched = false;
+let prevTouched = touched;
+
+const parallax = 0.8;
+
+let p;
+
+let width = 800;
+let height = 600;
 
 export function main($element, layout) {
     try {
         defineHTML($, $element);
 
         let sketch = (sk) => {
+            sk.preload = () => {
+                preloadGraphics(sk);
+            };
+
             sk.setup = () => {
-                sk.createCanvas(400, 400).parent("flappyData");
-                sk.background(153);
-                sk.stroke(200);
-                sk.strokeWeight(3);
+                sk.createCanvas(width, height).parent("flappyData");
+                reset(layout, sk);
             };
 
             sk.draw = () => {
-                sk.ellipse(50, 50, 80, 80);
+                sk.background(0);
+                sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, height);
+                // bgX -= pipes[0].speed * parallax;
+            };
+
+            sk.keyPressed = () => {
+                console.log("KeyPressed", sk.key);
+                if (sk.key === " ") {
+                    flappo.up();
+                    if (isOver) reset(); //you can just call reset() in Machinelearning if you die, because you cant simulate keyPress with code.
+                }
+            };
+
+            sk.touchStarted = () => {
+                if (isOver) reset();
             };
         };
-        console.log("Main",sketch);
-        const p = new p5(sketch);
-        console.log(p5, p);
+        p = new p5(sketch);
+        console.log("P", p);
     } catch (e) {
         console.error(e);
     }
@@ -34,3 +71,30 @@ async function innerPaint($element, layout) {
     console.log(layout);
 }
 
+function preloadGraphics(p) {
+    backgroundIMG = p.loadImage("/content/default/background.png");
+    flappoIMG = p.loadImage("/content/default/train.png");
+    pipeBodyIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
+    pipePeakIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
+}
+
+function reset(layout, p) {
+    flappo = new Flappo(p, height, flappoIMG);
+    pipes = [];
+    layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow) => {
+        pipes.push(new Pipe(p, dataRow[1].qNum, height, pipeBodyIMG, pipePeakIMG));
+    });
+    console.log("Pipes", pipes);
+    isOver = false;
+    bgX = 0;
+    p.loop();
+}
+
+function gameover(p) {
+    p.textSize(64);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text("GAMEOVER", width / 2, height / 2);
+    p.textAlign(p.LEFT, p.BASELINE);
+    isOver = true;
+    p.noLoop();
+}
