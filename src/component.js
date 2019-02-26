@@ -78,7 +78,7 @@ export function main($element, layout) {
                         }
                     }
                 } else {
-                    gameover(sk);
+                    gameWin(sk);
                 }
 
                 flappo.update();
@@ -138,6 +138,15 @@ function gameover(p) {
     p.textSize(64);
     p.textAlign(p.CENTER, p.CENTER);
     p.text("GAMEOVER", width / 2, height / 2);
+    p.textAlign(p.LEFT, p.BASELINE);
+    isOver = true;
+    p.noLoop();
+}
+
+function gameWin(p){
+    p.textSize(64);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text("You won the game!", width / 2, height / 2);
     p.textAlign(p.LEFT, p.BASELINE);
     isOver = true;
     p.noLoop();
