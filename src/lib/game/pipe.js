@@ -12,7 +12,7 @@ export class Pipe {
         this.height = height;
         this.pipeBodyIMG = pipeBodyIMG;
         this.pipePeakIMG = pipePeakIMG;
-        this.bottom = 0 + top;
+        this.bottom = height - top;
     }
 
     hits(flappo) {
