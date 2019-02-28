@@ -22,14 +22,14 @@ export function main($element, layout) {
     let touched = false;
     let prevTouched = touched;
 
+    let windowWidth = $element[0].offsetWidth;
+    let windowHeight = $element[0].offsetHeight;
     const parallax = 0.8;
-
+    
     if (p) {
         p.remove();
     }
 
-    let windowWidth = 800;
-    let windowHeight = 600;
     try {
         $element.empty();
         defineHTML($, $element);
@@ -41,7 +41,6 @@ export function main($element, layout) {
 
             sk.setup = () => {
                 console.log("SETUP");
-                sk.remove();
                 sk.createCanvas(windowWidth, windowHeight).parent("flappyData");
                 reset(layout, sk);
             };
@@ -97,6 +96,8 @@ export function main($element, layout) {
                 console.log("KeyPressed", sk.key);
                 if (sk.key === " ") {
                     flappo.up();
+                    flappo.update();
+                    flappo.show();
                     if (isOver) reset(layout, sk);
                 }
             };
