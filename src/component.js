@@ -101,9 +101,9 @@ export function main($element, layout) {
                 }
             };
 
-            sk.touchStarted = () => {
-                if (isOver) reset(layout, sk);
-            };
+            // sk.touchStarted = () => {
+            //     if (isOver) reset(layout, sk);
+            // };
         };
         p = new p5(sketch);
     } catch (e) {
@@ -128,10 +128,11 @@ export function main($element, layout) {
                 x = windowWidth;
             } else {
                 // Always 3 full pipes on the screen
-                x = windowWidth * index / 3;
+                x = windowWidth * index / 3 + windowWidth;
             }
-            const text = dataRow[0].qText + ": " + dataRow[1].qNum;
-            pipes.push(new Pipe(p, dataRow[1].qNum, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
+            const numValue = isFinite(dataRow[1].qNum) ? dataRow[1].qNum : 0;
+            const text = dataRow[0].qText + ": " + numValue;
+            pipes.push(new Pipe(p, numValue, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
         });
         console.log("Pipes", pipes);
         isOver = false;
