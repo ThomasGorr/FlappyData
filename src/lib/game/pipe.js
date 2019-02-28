@@ -1,8 +1,8 @@
 export class Pipe {
     constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG, text) {
         this.p = p;
-        this.spacing = 200;
-        this.top = top;
+        this.spacing = 150;
+        this.top = height - top - this.spacing;
         this.text = text;
 
         this.x = x;
@@ -12,7 +12,7 @@ export class Pipe {
         this.height = height;
         this.pipeBodyIMG = pipeBodyIMG;
         this.pipePeakIMG = pipePeakIMG;
-        this.bottom = this.top + this.spacing;
+        this.bottom = 0 + top;
     }
 
     hits(flappo) {
@@ -66,7 +66,7 @@ export class Pipe {
         this.x -= this.speed;
         this.p.textSize(18);
         this.p.textAlign(this.p.CENTER, this.p.CENTER);
-        this.p.text(this.text, this.x + this.w / 2, this.top + 20);
+        this.p.text(this.text, this.x + this.w / 2, this.bottom - 20);
         this.p.textAlign(this.p.LEFT, this.p.BASELINE);
 
     }
