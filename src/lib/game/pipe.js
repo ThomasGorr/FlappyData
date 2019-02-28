@@ -16,8 +16,8 @@ export class Pipe {
     }
 
     hits(flappo) {
-        let halfBirdHeight = flappo.height / 2;
-        let halfBirdWidth = flappo.width / 2;
+        let halfBirdHeight = flappo.flappoHeight / 2;
+        let halfBirdWidth = flappo.flappoWidth / 2;
         if (flappo.y - halfBirdHeight < this.top || flappo.y + halfBirdHeight > this.bottom) {
             //if this.w is huge, then we need different collision model
             if (flappo.x + halfBirdWidth > this.x && flappo.x - halfBirdWidth < this.x + this.w) {
