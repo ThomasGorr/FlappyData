@@ -90,12 +90,12 @@ export function main($element, layout) {
                 console.log("KeyPressed", sk.key);
                 if (sk.key === " ") {
                     flappo.up();
-                    if (isOver) reset(); //you can just call reset() in Machinelearning if you die, because you cant simulate keyPress with code.
+                    if (isOver) reset(layout, sk);
                 }
             };
 
             sk.touchStarted = () => {
-                if (isOver) reset();
+                if (isOver) reset(layout, sk);
             };
         };
         p = new p5(sketch);

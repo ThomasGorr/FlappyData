@@ -5,8 +5,6 @@ export class Flappo {
     constructor(p, height, flappoIMG) {
         this.p = p;
 
-        this.height = height;
-
         this.y = height / 2;
         this.x = 64;
 
@@ -36,8 +34,8 @@ export class Flappo {
         this.velocity += this.gravity;
         this.y += this.velocity;
 
-        if (this.y >= this.height - this.flappoHeight / 2) {
-            this.y = this.height - this.flappoHeight / 2;
+        if (this.y >= this.p.height - this.flappoHeight / 2) {
+            this.y = this.p.height - this.flappoHeight / 2;
             this.velocity = 0;
         }
 
