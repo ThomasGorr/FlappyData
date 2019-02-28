@@ -25,7 +25,9 @@ export function main($element, layout) {
     let windowWidth = $element[0].offsetWidth;
     let windowHeight = $element[0].offsetHeight;
     const parallax = 0.8;
-    
+
+    const maxValue = layout.qHyperCube.qMeasureInfo[0].qMax;
+
     if (p) {
         p.remove();
     }
@@ -123,6 +125,7 @@ export function main($element, layout) {
         flappo = null;
         flappo = new Flappo(p, windowHeight, flappoIMG);
         pipes = [];
+        const maxPipeHeight = windowHeight - (windowHeight / 2);
         layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
             let x = 0;
             if (index === 0) {
@@ -131,9 +134,15 @@ export function main($element, layout) {
                 // Always 3 full pipes on the screen
                 x = windowWidth * index / 3 + windowWidth;
             }
-            const numValue = isFinite(dataRow[1].qNum) ? dataRow[1].qNum : 0;
-            const text = dataRow[0].qText + ": " + numValue;
-            pipes.push(new Pipe(p, numValue, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
+
+            let numValue = isFinite(dataRow[1].qNum) ? dataRow[1].qNum : 0;
+            const displayValue = numValue;
+
+            const currentRelativeValue = 100 * numValue / maxValue;
+            const pipeHeight = currentRelativeValue * maxPipeHeight / 100;
+
+            const text = dataRow[0].qText + ": " + displayValue;
+            pipes.push(new Pipe(p, pipeHeight, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
         });
         console.log("Pipes", pipes);
         isOver = false;
