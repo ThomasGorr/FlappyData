@@ -9,6 +9,7 @@ import {Flappo} from "./lib/game/flappo";
 
 
 export function main($element, layout) {
+    let p;
     let flappo;
     let pipes;
     let backgroundIMG;
@@ -20,16 +21,17 @@ export function main($element, layout) {
     let isOver = false;
     let touched = false;
     let prevTouched = touched;
-    let p;
 
     const parallax = 0.8;
 
-    p;
+    if (p) {
+        p.remove();
+    }
 
     let windowWidth = 800;
     let windowHeight = 600;
     try {
-        p = null;
+        $element.empty();
         defineHTML($, $element);
 
         let sketch = (sk) => {
@@ -39,6 +41,7 @@ export function main($element, layout) {
 
             sk.setup = () => {
                 console.log("SETUP");
+                sk.remove();
                 sk.createCanvas(windowWidth, windowHeight).parent("flappyData");
                 reset(layout, sk);
             };
@@ -63,8 +66,10 @@ export function main($element, layout) {
 
                     for (let i = 0; i <= pipes.length - 1; i++) {
 
-                        pipes[i].update();
-                        pipes[i].show();
+                        if (pipes[i]) {
+                            pipes[i].update();
+                            pipes[i].show();
+                        }
 
                         if (pipes[i].pass(flappo)) {
                             score++;
@@ -75,6 +80,7 @@ export function main($element, layout) {
                         }
 
                         if (pipes[i].offscreen()) {
+                            console.log("SHIFT");
                             pipes.shift();
                         }
                     }
@@ -113,7 +119,6 @@ export function main($element, layout) {
 
     function reset(layout, p) {
         p.noLoop();
-        preloadGraphics(p);
         flappo = null;
         flappo = new Flappo(p, windowHeight, flappoIMG);
         pipes = [];
@@ -126,7 +131,6 @@ export function main($element, layout) {
                 x = windowWidth * index / 3;
             }
             const text = dataRow[0].qText + ": " + dataRow[1].qNum;
-            console.log("Text", text);
             pipes.push(new Pipe(p, dataRow[1].qNum, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
         });
         console.log("Pipes", pipes);
@@ -154,5 +158,4 @@ export function main($element, layout) {
         p.noLoop();
     }
 }
-
 
