@@ -1,9 +1,10 @@
 export class Pipe {
-    constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG, text) {
+    constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG, text, displayValue) {
         this.p = p;
-        this.spacing = 150;
+        this.spacing = 200;
         this.top = height - top - this.spacing;
         this.text = text;
+        this.displayValue = displayValue;
 
         this.x = x;
         this.w = 80;

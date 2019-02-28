@@ -73,15 +73,14 @@ export function main($element, layout) {
                         }
 
                         if (pipes[i].pass(flappo)) {
-                            score++;
+                            score+= pipes[i].displayValue;
                         }
 
                         if (pipes[i].hits(flappo)) {
-                            gameover();
+                            gameover(sk);
                         }
 
                         if (pipes[i].offscreen()) {
-                            console.log("SHIFT");
                             pipes.shift();
                         }
                     }
@@ -91,11 +90,11 @@ export function main($element, layout) {
 
                 flappo.update();
                 flappo.show();
+                showScores(sk);
 
             };
 
             sk.keyPressed = () => {
-                console.log("KeyPressed", sk.key);
                 if (sk.key === " ") {
                     flappo.up();
                     flappo.update();
@@ -126,6 +125,7 @@ export function main($element, layout) {
         flappo = new Flappo(p, windowHeight, flappoIMG);
         pipes = [];
         const maxPipeHeight = windowHeight - (windowHeight / 2);
+        // console.log("windowHeight", windowHeight, "maxPipeHeight", maxPipeHeight, "maxValue", maxValue);
         layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
             let x = 0;
             if (index === 0) {
@@ -140,21 +140,26 @@ export function main($element, layout) {
 
             const currentRelativeValue = 100 * numValue / maxValue;
             const pipeHeight = currentRelativeValue * maxPipeHeight / 100;
+            // console.log("numValue", numValue, "currentRelativeValue", currentRelativeValue, "pipeHeight", pipeHeight);
 
             const text = dataRow[0].qText + ": " + displayValue;
-            pipes.push(new Pipe(p, pipeHeight, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
+            pipes.push(new Pipe(p, pipeHeight, windowHeight, x, pipeBodyIMG, pipePeakIMG, text, displayValue));
         });
-        console.log("Pipes", pipes);
         isOver = false;
         touched = false;
         bgX = 0;
         p.loop();
     }
 
+    function showScores(p) {
+        p.textSize(32);
+        p.text("score: " + score, 1, 32);
+    }
+
     function gameover(p) {
-        p.textSize(64);
+        p.textSize(28);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text("GAMEOVER", windowWidth / 2, windowHeight / 2);
+        p.text("GAMEOVER 🙄  - \n You didn't pass your data discovery 🤦‍♂️", windowWidth / 2, windowHeight / 2);
         p.textAlign(p.LEFT, p.BASELINE);
         isOver = true;
         p.noLoop();
@@ -163,7 +168,7 @@ export function main($element, layout) {
     function gameWin(p) {
         p.textSize(64);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text("You won the game!", windowWidth / 2, windowHeight / 2);
+        p.text("You won the game, \n you data expert! \n 🦄", windowWidth / 2, windowHeight / 2);
         p.textAlign(p.LEFT, p.BASELINE);
         isOver = true;
         p.noLoop();
