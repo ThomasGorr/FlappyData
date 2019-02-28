@@ -1,8 +1,9 @@
 export class Pipe {
-    constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG) {
+    constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG, text) {
         this.p = p;
         this.spacing = 200;
         this.top = top;
+        this.text = text;
 
         this.x = x;
         this.w = 80;
@@ -63,6 +64,11 @@ export class Pipe {
 
     update() {
         this.x -= this.speed;
+        this.p.textSize(18);
+        this.p.textAlign(this.p.CENTER, this.p.CENTER);
+        this.p.text(this.text, this.x + this.w / 2, this.top + 20);
+        this.p.textAlign(this.p.LEFT, this.p.BASELINE);
+
     }
 
     offscreen() {

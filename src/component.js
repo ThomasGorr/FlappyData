@@ -8,27 +8,28 @@ import {Pipe} from "./lib/game/pipe";
 import {Flappo} from "./lib/game/flappo";
 
 
-let flappo;
-let pipes;
-let backgroundIMG;
-let flappoIMG;
-let pipeBodyIMG;
-let pipePeakIMG;
-let bgX;
-let score = 0;
-let isOver = false;
-let touched = false;
-let prevTouched = touched;
-
-const parallax = 0.8;
-
-let p;
-
-let windowWidth = 800;
-let windowHeight = 600;
-
 export function main($element, layout) {
+    let flappo;
+    let pipes;
+    let backgroundIMG;
+    let flappoIMG;
+    let pipeBodyIMG;
+    let pipePeakIMG;
+    let bgX;
+    let score = 0;
+    let isOver = false;
+    let touched = false;
+    let prevTouched = touched;
+    let p;
+
+    const parallax = 0.8;
+
+    p;
+
+    let windowWidth = 800;
+    let windowHeight = 600;
     try {
+        p = null;
         defineHTML($, $element);
 
         let sketch = (sk) => {
@@ -99,55 +100,59 @@ export function main($element, layout) {
             };
         };
         p = new p5(sketch);
-        console.log("P", p);
     } catch (e) {
         console.error(e);
+    }
+
+    function preloadGraphics(p) {
+        backgroundIMG = p.loadImage("/content/default/background.png");
+        flappoIMG = p.loadImage("/content/default/unicorn.png");
+        pipeBodyIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
+        pipePeakIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
+    }
+
+    function reset(layout, p) {
+        p.noLoop();
+        preloadGraphics(p);
+        flappo = null;
+        flappo = new Flappo(p, windowHeight, flappoIMG);
+        pipes = [];
+        layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
+            let x = 0;
+            if (index === 0) {
+                x = windowWidth;
+            } else {
+                // Always 3 full pipes on the screen
+                x = windowWidth * index / 3;
+            }
+            const text = dataRow[0].qText + ": " + dataRow[1].qNum;
+            console.log("Text", text);
+            pipes.push(new Pipe(p, dataRow[1].qNum, windowHeight, x, pipeBodyIMG, pipePeakIMG, text));
+        });
+        console.log("Pipes", pipes);
+        isOver = false;
+        touched = false;
+        bgX = 0;
+        p.loop();
+    }
+
+    function gameover(p) {
+        p.textSize(64);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text("GAMEOVER", windowWidth / 2, windowHeight / 2);
+        p.textAlign(p.LEFT, p.BASELINE);
+        isOver = true;
+        p.noLoop();
+    }
+
+    function gameWin(p) {
+        p.textSize(64);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text("You won the game!", windowWidth / 2, windowHeight / 2);
+        p.textAlign(p.LEFT, p.BASELINE);
+        isOver = true;
+        p.noLoop();
     }
 }
 
 
-function preloadGraphics(p) {
-    backgroundIMG = p.loadImage("/content/default/background.png");
-    flappoIMG = p.loadImage("/content/default/unicorn.png");
-    pipeBodyIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
-    pipePeakIMG = p.loadImage("/content/default/pipe_marshmallow_fix.png");
-}
-
-function reset(layout, p) {
-    p.noLoop();
-    flappo = null;
-    flappo = new Flappo(p, windowHeight, flappoIMG);
-    pipes = [];
-    layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
-        let x = 0;
-        if (index === 0) {
-            x = windowWidth;
-        } else {
-            // Always 3 full pipes on the screen
-            x = windowWidth * index / 3;
-        }
-        pipes.push(new Pipe(p, dataRow[1].qNum, windowHeight, x, pipeBodyIMG, pipePeakIMG));
-    });
-    console.log("Pipes", pipes);
-    isOver = false;
-    bgX = 0;
-    p.loop();
-}
-
-function gameover(p) {
-    p.textSize(64);
-    p.textAlign(p.CENTER, p.CENTER);
-    p.text("GAMEOVER", windowWidth / 2, windowHeight / 2);
-    p.textAlign(p.LEFT, p.BASELINE);
-    isOver = true;
-    p.noLoop();
-}
-
-function gameWin(p){
-    p.textSize(64);
-    p.textAlign(p.CENTER, p.CENTER);
-    p.text("You won the game!", windowWidth / 2, windowHeight / 2);
-    p.textAlign(p.LEFT, p.BASELINE);
-    isOver = true;
-    p.noLoop();
-}
