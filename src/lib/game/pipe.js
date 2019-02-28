@@ -2,7 +2,11 @@ export class Pipe {
     constructor(p, top, height, x, pipeBodyIMG, pipePeakIMG, text) {
         this.p = p;
         this.spacing = 200;
-        this.top = top;
+        if (isFinite(top)) {
+            this.top = top;
+        } else {
+            this.top = 0;
+        }
         this.text = text;
 
         this.x = x;
