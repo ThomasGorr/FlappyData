@@ -136,7 +136,7 @@ export function main($element, layout) {
             }
 
             let numValue = isFinite(dataRow[1].qNum) ? dataRow[1].qNum : 0;
-            const displayValue = numValue;
+            const displayValue = parseInt(numValue);
 
             const currentRelativeValue = 100 * numValue / maxValue;
             const pipeHeight = currentRelativeValue * maxPipeHeight / 100;
