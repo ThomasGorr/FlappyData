@@ -1,12 +1,9 @@
-// https://medium.com/front-end-weekly/learning-the-p5-canvas-drawing-library-in-es6-and-webpack-bf514a679544
-
 import $ from "jquery";
 import "./styles.css";
 import p5 from "p5/lib/p5.js";
 import {defineHTML} from "./lib/html/divDefinition";
 import {Pipe} from "./lib/game/pipe";
 import {Flappo} from "./lib/game/flappo";
-
 
 export function main($element, layout) {
     let p;
@@ -20,7 +17,6 @@ export function main($element, layout) {
     let score = 0;
     let isOver = false;
     let touched = false;
-    let prevTouched = touched;
 
     let windowWidth = $element[0].offsetWidth;
     let windowHeight = $element[0].offsetHeight;
@@ -29,30 +25,27 @@ export function main($element, layout) {
     const maxValue = layout.qHyperCube.qMeasureInfo[0].qMax;
 
     if (p) {
+        reset(layout,p);
         p.remove();
     }
+    $element.empty();
+    defineHTML($, $element);
 
     try {
-        $element.empty();
-        defineHTML($, $element);
-
         let sketch = (sk) => {
             sk.preload = () => {
                 preloadGraphics(sk);
             };
-
             sk.setup = () => {
                 console.log("SETUP");
                 sk.createCanvas(windowWidth, windowHeight).parent("flappyData");
                 reset(layout, sk);
             };
-
             sk.draw = () => {
                 sk.background(0);
                 sk.image(backgroundIMG, bgX, 0, backgroundIMG.width, windowHeight);
                 if (pipes.length > 0) {
                     bgX -= pipes[0].speed * parallax;
-
                     // this handles the "infinite loop" by checking if the right
                     // edge of the image would be on the screen, if it is draw a
                     // second copy of the image right next to it
@@ -107,7 +100,9 @@ export function main($element, layout) {
             //     if (isOver) reset(layout, sk);
             // };
         };
-        p = new p5(sketch);
+        if(!p){
+            p = new p5(sketch);
+        }
     } catch (e) {
         console.error(e);
     }
@@ -125,7 +120,6 @@ export function main($element, layout) {
         flappo = new Flappo(p, windowHeight, flappoIMG);
         pipes = [];
         const maxPipeHeight = windowHeight - (windowHeight / 2);
-        // console.log("windowHeight", windowHeight, "maxPipeHeight", maxPipeHeight, "maxValue", maxValue);
         layout.qHyperCube.qDataPages[0].qMatrix.forEach((dataRow, index) => {
             let x = 0;
             if (index === 0) {
@@ -134,14 +128,10 @@ export function main($element, layout) {
                 // Always 3 full pipes on the screen
                 x = windowWidth * index / 3 + windowWidth;
             }
-
             let numValue = isFinite(dataRow[1].qNum) ? dataRow[1].qNum : 0;
             const displayValue = parseInt(numValue);
-
             const currentRelativeValue = 100 * numValue / maxValue;
             const pipeHeight = currentRelativeValue * maxPipeHeight / 100;
-            // console.log("numValue", numValue, "currentRelativeValue", currentRelativeValue, "pipeHeight", pipeHeight);
-
             const text = dataRow[0].qText + ": " + displayValue;
             pipes.push(new Pipe(p, pipeHeight, windowHeight, x, pipeBodyIMG, pipePeakIMG, text, displayValue));
         });
@@ -153,7 +143,7 @@ export function main($element, layout) {
 
     function showScores(p) {
         p.textSize(32);
-        p.text("score: " + score, 1, 32);
+        p.text("Score: " + score, 1, 32);
     }
 
     function gameover(p) {
