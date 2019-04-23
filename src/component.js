@@ -152,7 +152,7 @@ export function main($element, layout) {
     function gameover(p) {
         p.textSize(28);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text("GAMEOVER 🙄  - \n You didn't pass your data discovery 🤦‍♂️", windowWidth / 2, windowHeight / 2);
+        p.text("GAMEOVER 🙄  - \n You didn't pass your data discovery 🤦‍️", windowWidth / 2, windowHeight / 2);
         p.textAlign(p.LEFT, p.BASELINE);
         isOver = true;
         p.noLoop();
