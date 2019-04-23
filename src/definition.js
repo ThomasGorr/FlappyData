@@ -5,12 +5,12 @@ export const definition = {
         dimensions: {
             uses: "dimensions",
             min: 1,
-            max: 2,
+            max: 1,
         },
         measure: {
             uses: "measures",
             min: 1,
-            max: 2,
+            max: 1,
         },
         sorting: {
             uses: "sorting",
