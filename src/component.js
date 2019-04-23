@@ -5,8 +5,9 @@ import {defineHTML} from "./lib/html/divDefinition";
 import {Pipe} from "./lib/game/pipe";
 import {Flappo} from "./lib/game/flappo";
 
+let p;
+
 export function main($element, layout) {
-    let p;
     let flappo;
     let pipes;
     let backgroundIMG;
@@ -23,13 +24,14 @@ export function main($element, layout) {
     const parallax = 0.8;
 
     const maxValue = layout.qHyperCube.qMeasureInfo[0].qMax;
-
+    let divName = "flappyData";//+ Date.now();
     if (p) {
-        reset(layout,p);
-        p.remove();
+        reset(layout, p);
+    } else{
+        $element.empty();
+        defineHTML($, $element, divName);
     }
-    $element.empty();
-    defineHTML($, $element);
+
 
     try {
         let sketch = (sk) => {
@@ -37,8 +39,8 @@ export function main($element, layout) {
                 preloadGraphics(sk);
             };
             sk.setup = () => {
-                console.log("SETUP");
-                sk.createCanvas(windowWidth, windowHeight).parent("flappyData");
+                console.log("Setup");
+                sk.createCanvas(windowWidth, windowHeight).parent(divName);
                 reset(layout, sk);
             };
             sk.draw = () => {
@@ -66,7 +68,7 @@ export function main($element, layout) {
                         }
 
                         if (pipes[i].pass(flappo)) {
-                            score+= pipes[i].displayValue;
+                            score += pipes[i].displayValue;
                         }
 
                         if (pipes[i].hits(flappo)) {
@@ -100,7 +102,7 @@ export function main($element, layout) {
             //     if (isOver) reset(layout, sk);
             // };
         };
-        if(!p){
+        if (!p) {
             p = new p5(sketch);
         }
     } catch (e) {
@@ -116,6 +118,7 @@ export function main($element, layout) {
 
     function reset(layout, p) {
         p.noLoop();
+        score = 0;
         flappo = null;
         flappo = new Flappo(p, windowHeight, flappoIMG);
         pipes = [];
